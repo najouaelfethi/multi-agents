@@ -1,5 +1,5 @@
 import os
-import fitz  # PDF
+import fitz 
 from pptx import Presentation  # PPTX
 from docx import Document as DocxDocument  # DOCX
 from PIL import Image

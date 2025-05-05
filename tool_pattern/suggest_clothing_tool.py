@@ -1,4 +1,4 @@
-from tool_pattern.tool import tool
+from tool_pattern.tool import Tool, tool
 
 
 @tool

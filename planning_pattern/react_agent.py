@@ -105,6 +105,7 @@ class ReactAgent:
         """
         observations = {}
         for tool_call_str in tool_calls_content:
+            print("DEBUG tool_call_str:", tool_call_str)
             tool_call = json.loads(tool_call_str)
             tool_name = tool_call["name"]
             tool = self.tools_dict[tool_name]

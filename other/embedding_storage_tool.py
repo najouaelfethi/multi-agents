@@ -4,15 +4,27 @@ from tool_pattern.tool import tool
 
 from processors.text_processor import TextProcessor
 from processors.image_processor import ImageTextProcessor
+from storage.pinecone_vector import VectorStore
 
 text_processor = TextProcessor()
 image_processor = ImageTextProcessor() #using Teressat OCR Library
+vector_store = VectorStore()
+
+
 @tool
 def embed_text(text: str) -> str:
     """
     Embed a given text string and return the vector.
     """
     result = text_processor.process_text(text)
+
+    #store in vector database
+    vector_store.upsert(
+        content=result["content"],
+        embedding=result["embedding"],
+        metadata={"type": "text"}
+    )
+
     return json.dumps({
         "content": result["content"],
         "embedding": result["embedding"]
@@ -26,6 +38,13 @@ def embed_image(image_path: str) -> str:
     extracted = image_processor.extract_text_from_images([image_path])
     if not extracted:
         return json.dumps({"error": "No text found in image."})
+    
+    vector_store.upsert(
+        content=extracted[0]["content"],
+        embedding=extracted[0]["embedding"],
+        metadata={"type": "image", "source": image_path}
+    )
+
     return json.dumps({
         "content": extracted[0]["content"],
         "embedding": extracted[0]["embedding"]

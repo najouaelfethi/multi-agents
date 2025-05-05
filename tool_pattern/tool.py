@@ -32,12 +32,19 @@ def get_fn_signature(fn: Callable) -> dict:
     fn_signature: dict = {
         "name": fn.__name__,
         "description": fn.__doc__,
-        "parameters": {"properties": {}},
+        "parameters": {
+            "type": "object",
+            "properties": {}
+        }
     }
-    schema = {
-        k: {"type": v.__name__} for k, v in fn.__annotations__.items() if k != "return"
-    }
-    fn_signature["parameters"]["properties"] = schema
+    
+    # Get parameter types from function annotations
+    for param_name, param_type in fn.__annotations__.items():
+        if param_name != "return":
+            fn_signature["parameters"]["properties"][param_name] = {
+                "type": param_type.__name__ if hasattr(param_type, "__name__") else str(param_type)
+            }
+    
     return fn_signature
 
 #maybe delete it later
@@ -54,19 +61,25 @@ def validate_arguments(tool_call: dict, tool_signature: dict) -> dict:
     """
     properties = tool_signature["parameters"]["properties"]
 
-    # TODO: This is overly simplified but enough for simple Tools.
+    # Type mapping for conversion
     type_mapping = {
         "int": int,
         "str": str,
         "bool": bool,
         "float": float,
+        "list": list,
+        "dict": dict
     }
 
     for arg_name, arg_value in tool_call["arguments"].items():
-        expected_type = properties[arg_name].get("type")
-
-        if not isinstance(arg_value, type_mapping[expected_type]):
-            tool_call["arguments"][arg_name] = type_mapping[expected_type](arg_value)
+        if arg_name in properties:
+            expected_type = properties[arg_name].get("type")
+            if expected_type in type_mapping:
+                try:
+                    if not isinstance(arg_value, type_mapping[expected_type]):
+                        tool_call["arguments"][arg_name] = type_mapping[expected_type](arg_value)
+                except (ValueError, TypeError):
+                    raise ValueError(f"Could not convert argument '{arg_name}' to type {expected_type}")
 
     return tool_call
 
@@ -118,5 +131,5 @@ def tool(fn: Callable):
         return Tool(
             name=fn_signature.get("name"), fn=fn, fn_signature=json.dumps(fn_signature)
         )
-
     return wrapper()
+

@@ -18,7 +18,7 @@ with Crew() as crew:
     clothing_agent = Agent(
         name="ClothingAdvisorAgent",
         backstory="You are a clothing advisor. Based on weather data, suggest appropriate clothing.",
-        task_description="Use the temperature and description to suggest suitable clothes.",
+        task_description="Use the temperature <float> and description <string> to suggest suitable clothes.",
         task_expected_output="Return a clothing advice text.",
         tools=[suggest_clothing]
     )
