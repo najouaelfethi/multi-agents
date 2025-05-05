@@ -1,0 +1,2981 @@
+{
+  "name": "Studio Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are an intelligent assistant specialized in answering user questions using Nostr user profiles. Your primary goal is to provide precise, contextually relevant, and concise answers based on the tools and resources available.\n\n### TOOL\nUse the \"nostr_damus_user_profiles\" tool to:\n- perform semantic similarity searches and retrieve information from Nostr user profiles relevant to the user's query.\n- access detailed information about Nostr and/or Damus users when additional context or specifics are required.\n\n### Key Instructions\n1. **Response Guidelines**:\n   - Clearly explain how the retrieved information addresses the user's query, if applicable.\n   - If no relevant information is found, respond with: \"I cannot find the answer in the available resources.\"\n\n2. **Focus and Relevance**:\n   - Ensure all responses are directly aligned with the user's question.\n   - Avoid including extraneous details or relying solely on internal knowledge.\n"
+        }
+      },
+      "id": "ed71098d-d981-49fe-9870-94a96b86f9f8",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        660,
+        140
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Studio Manager Router Agent",
+        "height": 340,
+        "width": 800,
+        "color": 5
+      },
+      "id": "0eb7d903-51de-4b63-9e1f-4b24f4824ec4",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        420,
+        20
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        100
+      ],
+      "id": "b855ce7e-ace0-46dc-9f69-4d0af1c1fbfc",
+      "name": "User upload script",
+      "webhookId": "ff09e75a-aa77-47c6-869d-63e3b3dd7d70"
+    },
+    {
+      "parameters": {
+        "content": "## 👍Start Here!",
+        "height": 340,
+        "width": 280,
+        "color": 4
+      },
+      "id": "2c0cde35-121c-469d-a30e-05f1ddc0209b",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Studio Manager tools",
+        "height": 440,
+        "width": 780,
+        "color": 2
+      },
+      "id": "de9fe5aa-ff9d-4468-9318-0fd06b11e218",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        440,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 🤖LLM",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "id": "7baa71b5-cafd-4e93-bbca-1302a3d0eab7",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        560
+      ],
+      "id": "ab531b24-2540-431d-9338-dfa687c8fb11",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "name": "DocumentParser",
+        "description": "=Input: DOCX, PPTX, PDF\nOutput: Structured content with\nheadings, paragraphs,\nand marked key points",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        520,
+        580
+      ],
+      "id": "c4aa4339-a1bc-4cf6-b7c4-1591e4966a80",
+      "name": "Document Parser"
+    },
+    {
+      "parameters": {
+        "name": "LEARNINGOBJECTIVEExtractor",
+        "description": "=Input: Structured content\nfrom Document Parser\nOutput: Clear learning objectives\nand key points to be covered",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        580
+      ],
+      "id": "42586199-2c71-4ab6-be98-4b44f84f7b2e",
+      "name": "Learning Objective Extractor"
+    },
+    {
+      "parameters": {
+        "name": "SequencierGenerator",
+        "description": "=Input: Structured content\nand learning objectives\nOutput: Sequenced content outline\nwith logical flow of topics",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        580
+      ],
+      "id": "db770166-65cd-4f06-8d8e-524a33377f56",
+      "name": "Sequencier Generator"
+    },
+    {
+      "parameters": {
+        "name": "StoryboardGenerator",
+        "description": "=Input: Sequencier, structured content, learning objectives\n\nOutput: Complete storyboard\n- Screen layouts\n- Visual element descriptions\n- Production notes\n- Client comment sections",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1080,
+        580
+      ],
+      "id": "ddb26a0a-3b96-4977-ac17-bf9d06894db5",
+      "name": "Storyboard Generator"
+    },
+    {
+      "parameters": {
+        "name": "QuizGenerator",
+        "description": "=Input: Learning content and objectives\n\nOutput: Formatted quiz questions ready for storyboard inclusion",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        520,
+        760
+      ],
+      "id": "dc19c507-dbd4-4716-8f0d-b0daaba43f36",
+      "name": "Quiz Generator"
+    },
+    {
+      "parameters": {
+        "name": "VisualElementPlanner",
+        "description": "=Input: Storyboard content\nOutput: Specifications for visual elements\n(icons, diagrams, animations)",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        760
+      ],
+      "id": "ed825917-171a-4636-9b20-f96ca86fe451",
+      "name": "Visual Element Planner"
+    },
+    {
+      "parameters": {
+        "name": "ModuleBuilder",
+        "description": "=Input: Approved storyboard, visual elements\nOutput: Complete Rise module alike with all components",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        760
+      ],
+      "id": "174546ee-e6cd-4105-a53a-025561127efd",
+      "name": "Module Builder"
+    },
+    {
+      "parameters": {
+        "content": "## Memory",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "id": "2272a1f7-1971-442c-b1a9-7e636f6846b3",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        780
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        100,
+        860
+      ],
+      "id": "403c8df5-7dcd-4e91-954b-c8b1ab912adf",
+      "name": "Postgres Memory"
+    },
+    {
+      "parameters": {
+        "instructions": "Generate E-learning Module ( Rise Alike )"
+      },
+      "type": "n8n-nodes-base.aiTransform",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        140
+      ],
+      "id": "2b2003c3-7852-4645-bb6b-d4384a1ddb34",
+      "name": "Generate E-learning Module ( Rise Alike )"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "fromEmail": "StudioManager@gmail.com",
+        "toEmail": "mbelamine@gmail.com",
+        "subject": "Approval Required",
+        "message": "approve module",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1900,
+        140
+      ],
+      "id": "f0d3f09e-5d65-4c8a-8357-f83cfc65fc88",
+      "name": "Validate Module",
+      "webhookId": "553118d8-1c0f-4500-ac14-5c48de918e1f"
+    },
+    {
+      "parameters": {
+        "content": "## Approve Content before Proceeding",
+        "height": 340,
+        "width": 380,
+        "color": 5
+      },
+      "id": "cd132567-7d7f-4e67-b015-f82686a054c1",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1760,
+        20
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d1cd885c-e1c0-430d-b9c0-0fd6aa7a2e70",
+              "leftValue": true,
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        760
+      ],
+      "id": "3f8ac383-bbb8-4d1e-8a5c-9235f6585b52",
+      "name": "is approved"
+    },
+    {
+      "parameters": {
+        "content": "## Publish to Plateform",
+        "height": 700,
+        "width": 300,
+        "color": 6
+      },
+      "id": "a7c4f34d-06ad-413b-a80f-f7837ba7506f",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2740,
+        240
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Studio Manager Publisher",
+        "height": 340,
+        "width": 360,
+        "color": 4
+      },
+      "id": "ae138e28-b257-472f-a6c2-fc5a3e2665ab",
+      "name": "Sticky Note12",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2240,
+        420
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.aiTransform",
+      "typeVersion": 1,
+      "position": [
+        2820,
+        340
+      ],
+      "id": "252f5083-d979-4103-84a6-e24804656d22",
+      "name": "Publish in Studio Manager"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.aiTransform",
+      "typeVersion": 1,
+      "position": [
+        2820,
+        540
+      ],
+      "id": "e3e8241d-2784-4529-84aa-3f713efe9faf",
+      "name": "Publish in Docebo"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.aiTransform",
+      "typeVersion": 1,
+      "position": [
+        2820,
+        740
+      ],
+      "id": "8c6a12ef-35cc-4298-9e05-851bdfd7546d",
+      "name": "Publish in Moodle"
+    },
+    {
+      "parameters": {
+        "content": "## Data Flow ",
+        "height": 880,
+        "width": 6500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        20,
+        1560
+      ],
+      "typeVersion": 1,
+      "id": "91e155d3-0558-40f0-b01a-b59e41116850",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "Plateform",
+                    "rightValue": "Studio Manager",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7c39e7f1-5416-4f4c-813b-4c9b03ec55d6"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Studio Manager"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0f77077d-a05b-4520-a7b2-53251987b618",
+                    "leftValue": "Plateform",
+                    "rightValue": "Docebo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Docebo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e1994b3d-968d-4311-bb56-8a4a14086dd7",
+                    "leftValue": "Plateform",
+                    "rightValue": "Moodle",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Moodle"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2320,
+        540
+      ],
+      "id": "d72ab12e-9da1-4284-b7ce-f925a6b31df5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1500,
+        1900
+      ],
+      "id": "ff50dd37-526d-4ade-8e58-031669f1b0d6",
+      "name": "Structured Content JSON"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2340,
+        2020
+      ],
+      "id": "79682f23-928e-44ee-80c1-838ca7c731ed",
+      "name": "Learning Objectives JSON"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1040,
+        1900
+      ],
+      "id": "53141eb9-3c82-4b1a-9b3f-0e6ebee02dc8",
+      "name": "Document Parser tool"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1960,
+        2020
+      ],
+      "id": "f72a1915-2e70-49e2-bc95-6cb2220b7d8b",
+      "name": "Learning Objective Extractor tool"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        2820,
+        2020
+      ],
+      "id": "9392dcda-6226-4693-a073-2a9f10a515dd",
+      "name": "Sequencier Generator tool"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        3180,
+        2020
+      ],
+      "id": "43cc507e-0818-428b-b2a8-cf200f5598c4",
+      "name": "Content Sequence JSON"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        4120,
+        2020
+      ],
+      "id": "8094a102-7562-417e-93dc-56148c29e0eb",
+      "name": "Storyboard Generator tool"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        4980,
+        2020
+      ],
+      "id": "f0e792a3-3ac4-4a7e-adb7-6cadc8017e6d",
+      "name": "Visual Element Planner tool"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        5620,
+        2020
+      ],
+      "id": "798f7fa3-3a72-4830-abe0-5332d414e226",
+      "name": "Module Builder Tool"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        4500,
+        2020
+      ],
+      "id": "fd827dde-da13-4c5f-9f9d-ca419bffa3a2",
+      "name": "Storyboard1"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor item in _input.all():\n  item.json.myNewField = 1\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6020,
+        2020
+      ],
+      "id": "cbe8ee40-1925-4985-bf4b-aa3a562abaaf",
+      "name": "Final Module"
+    },
+    {
+      "parameters": {
+        "content": "## Project Overview\n\n## E-Learning RAG Agent: Technical & Non-Technical Overview\n## Project Summary\n## The E-Learning RAG Agent is an AI-powered system that transforms client-provided learning content into fully structured, interactive e-learning modules using ##Articulate Rise format. The system employs retrieval-augmented generation (RAG) throughout the process to ensure high-quality, contextually relevant outputs at each stage.\n## Technical Architecture\n## Core Technologies\n\n## LLM: GPT-4 for all generative tasks\n## Database: PostgreSQL with pgvector extension for both structured data and vector embeddings\n## Workflow Orchestration: N8N for process automation and tool coordination\n## Programming: Python for tool development with LangChain/LlamaIndex for RAG components\n\n## System Components\n\n## Document Parser Tool\n\n## - Ingests DOCX, PPTX, PDF files\n## - Performs hierarchical chunking\n## - Creates and stores embeddings in PostgreSQL\n## - Outputs structured content JSON\n\n\n## Learning Objective Extractor Tool\n\n## - Uses RAG to identify appropriate learning objectives\n## - References pedagogical frameworks\n## - Outputs learning objectives JSON\n\n\n## Sequencier Generator Tool\n\n## - Uses RAG to develop optimal content sequence\n## - Ensures logical progression of topics\n## - Generates appropriate learning activities and exercises\n## - Outputs content sequence JSON\n\n\n## Storyboard Generator Tool\n\n## - Creates comprehensive storyboard based on content sequence\n## - Includes screen layouts, voiceover text\n## - Outputs detailed storyboard JSON\n\n\n## Quiz Generator Tool\n\n## - Creates assessment questions aligned with objectives\n## - Uses RAG to ensure questions test relevant content\n## - Outputs quiz questions JSON\n\n\n## Visual Element Planner Tool\n\n## - Plans visuals for both content and assessments\n## - Uses RAG to suggest appropriate visual approaches\n## - Outputs visual specifications JSON\n\n\n## Module Builder Tool\n\n## - Assembles all components into Rise format\n## - Creates final interactive e-learning module\n## - Outputs completed Rise module\n\n\n\n## Data Flow\n\n## - Linear progression from content analysis to module building\n## - JSON outputs at each stage for modular processing\n## - RAG-enhanced context at each generation step\n## - Feedback loops for validation and improvement\n\n## User Roles\n\n## - Content Providers: Supply the source materials\n## - Instructional Reviewers: Validate learning objectives and sequence\n## - Learning Designers: Review and approve storyboards\n## - Project Managers: Oversee the workflow process\n## - Technical Administrators: Manage the system and handle publishing\n\n## Key Benefits\n\n## - Reduced Development Time: 70-80% reduction in e-learning development time\n## - Consistency: Standardized approach to module development\n## - Scalability: Ability to process multiple projects simultaneously\n## - Quality: RAG-enhanced outputs ensure higher quality content\n\n\n\n",
+        "height": 3240,
+        "width": 1280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1780,
+        -40
+      ],
+      "typeVersion": 1,
+      "id": "11838345-a4ae-4ceb-8b53-c163876af302",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        120,
+        1880
+      ],
+      "id": "f693136b-bdc6-4963-8afc-b92f253319cd",
+      "name": "Client Cahier de charge"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1500,
+        2160
+      ],
+      "id": "274ae145-e5a5-4c8e-a094-d5d2de6111ac",
+      "name": "Contenu brute de l’expert metie"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1720,
+        2020
+      ],
+      "id": "c2aefc79-54a3-410b-839b-2ef9a6b6e546",
+      "name": "Merge"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        7340,
+        2380
+      ],
+      "id": "b7c87a6b-129f-4405-a397-f7edc6336387",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        5380,
+        2020
+      ],
+      "id": "a2baa688-6c7f-4e4c-a4ec-82498a5b3bee",
+      "name": "Storyboard With Visual Specifications"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "subject": "Ensure alignment with requirements",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2580,
+        2020
+      ],
+      "id": "e329f17d-af8a-4ad3-ae23-9a9be8ecafd8",
+      "name": "Validation checkpoints",
+      "webhookId": "d707071d-6889-4f1e-ad6f-0486d4403470"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        3400,
+        2020
+      ],
+      "id": "20771579-06be-4c30-ba0e-7010ac8ef4ea",
+      "name": "Validation checkpoints1",
+      "webhookId": "2ba2dabc-dcc9-433d-899a-19a18261a248"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        4740,
+        2020
+      ],
+      "id": "0affa008-70f8-4e1a-8095-262274e0b14e",
+      "name": "Validation checkpoints2",
+      "webhookId": "001a366c-64e6-4870-8b25-734ab0fa9905"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        6240,
+        2020
+      ],
+      "id": "8d5cf758-af94-4d61-96c9-ed9e2f8cb443",
+      "name": "Validation checkpoints3",
+      "webhookId": "bd8d7f54-e7c4-4507-a78c-71c3b8d448ba"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait"
+      },
+      "type": "n8n-nodes-base.microsoftTeams",
+      "typeVersion": 2,
+      "position": [
+        600,
+        1680
+      ],
+      "id": "d0f6fec0-d122-41da-ae48-203555873e10",
+      "name": "Microsoft Teams",
+      "webhookId": "0d379ab5-d20b-4464-90e9-ba88ebed754c"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "43b666e0-2331-46ef-ab31-e2b69f4f59e5",
+              "leftValue": "Besoin de brief",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "b00e8d98-ef3a-4d3d-80f3-6b001c077d53",
+              "leftValue": "No besoin de brief",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        1880
+      ],
+      "id": "86cf1c88-0bf7-46e6-a9f7-ed8423153a11",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        800,
+        1680
+      ],
+      "id": "8210474e-708c-4b82-96d7-8927b136a074",
+      "name": "Client Cahier de charge + briefs ( Transcription )"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3600,
+        1820
+      ],
+      "id": "f37398c4-d859-4bb0-affe-4200a06b8e60",
+      "name": "Quiz Generator tool"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        3900,
+        1820
+      ],
+      "id": "f2cce942-5436-4171-9145-3298b3063e2f",
+      "name": "Quizes"
+    },
+    {
+      "parameters": {
+        "content": "## Data Flow ",
+        "height": 1380,
+        "width": 5460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -420,
+        3140
+      ],
+      "typeVersion": 1,
+      "id": "626f706d-4273-4a7d-b269-ac1ed794cb73",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor item in _input.all():\n  item.json.myNewField = 1\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4820,
+        3340
+      ],
+      "id": "f6638850-9f74-4d80-8b95-22b3b16d44aa",
+      "name": "Final Module1"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        3340
+      ],
+      "id": "db3c6743-98b0-48a0-b318-a9a0b85d3e53",
+      "name": "Client Cahier de charge1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1540,
+        3340
+      ],
+      "id": "9c61b687-e7f8-4280-afd3-5f702d24a59c",
+      "name": "Sequencier Generator agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        700,
+        3340
+      ],
+      "id": "4453da93-1a8a-4613-912f-15bc46e6bdfe",
+      "name": "Learning Objective Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        2300,
+        3740
+      ],
+      "id": "13f46f0f-02db-4817-b1ba-349f451701c4",
+      "name": "Quiz Generator Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        3060,
+        3340
+      ],
+      "id": "75c349af-af80-4c35-b9a5-a804c20d3ba2",
+      "name": "Storyboard Generator Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        3720,
+        3340
+      ],
+      "id": "7d291214-74d6-44c4-b1a6-75bc328a9253",
+      "name": "Visual Element Planner Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        4360,
+        3340
+      ],
+      "id": "0e04bbfe-1105-4c74-8db6-e061f3baefdf",
+      "name": "Module Builder Agent"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Learning Objective Model & tools",
+        "height": 420,
+        "width": 500,
+        "color": 2
+      },
+      "id": "35c9d513-3852-4317-83d6-d7ed544c8366",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        620,
+        3600
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "name": "DocumentParser",
+        "description": "Extracts objectives from text",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        820,
+        3700
+      ],
+      "id": "e2d2da40-2983-4e1d-9990-47accdd93015",
+      "name": "objective_extractor",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "DocumentParser",
+        "description": "=Categorizes by Bloom's taxonomy levels\n\nBloom’s taxonomy is a classification system used to define and distinguish different levels of human cognition\ni.e., thinking, learning, and understanding.\nEducators have typically used Bloom’s taxonomy to inform or guide the development of assessments (tests and other evaluations of student learning), curriculum (units, lessons, projects, and other learning activities), and instructional methods such as questioning strategies.",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        980,
+        3700
+      ],
+      "id": "5ac2d6fd-e2d3-4d7a-bea5-566dd34a45b0",
+      "name": "bloom_classifier",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "DocumentParser",
+        "description": "Standardizes objective output",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        980,
+        3880
+      ],
+      "id": "f544127c-5d33-4d17-9c50-d84926bbdc2e",
+      "name": "objective_formatter",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        3700
+      ],
+      "id": "3cd8cbb1-b870-49bc-9544-81b993bee207",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Sequencier Generator Model & tools",
+        "height": 400,
+        "width": 520,
+        "color": 2
+      },
+      "id": "9dda6cb3-9934-4ef7-b0cb-f251a26374fb",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1380,
+        3580
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "name": "dependency_analyzer",
+        "description": "Identifies relationships between objectives",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1600,
+        3680
+      ],
+      "id": "52b7c826-3fdc-46ec-93b2-2c56d2c32937",
+      "name": "dependency_analyzer",
+      "notes": "Handles PDF extraction using PyPDF2/PDFMiner"
+    },
+    {
+      "parameters": {
+        "name": "path_optimizer",
+        "description": "=Determines the optimal order of learning content based on difficulty progression, concept dependencies, and learning science principles",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1780,
+        3680
+      ],
+      "id": "5740aaaa-525c-40ba-b8b8-1191b221b67d",
+      "name": "path_optimizer",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-3-7-sonnet-20250219",
+          "cachedResultName": "Claude 3.7 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1420,
+        3680
+      ],
+      "id": "ad9f7a84-10d8-450c-90a7-b03471d538a6",
+      "name": "Anthropic Chat Model"
+    },
+    {
+      "parameters": {
+        "name": "sequence_visualizer",
+        "description": "=Generates a flowchart or timeline showing how topics connect and progress, similar to a curriculum map with arrows showing prerequisites and relationship",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1760,
+        3860
+      ],
+      "id": "99fd2acf-ebac-4af3-8010-29e058246b31",
+      "name": "sequence_visualizer",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Quiz Generator Model & tools",
+        "height": 400,
+        "width": 520,
+        "color": 2
+      },
+      "id": "aff38c0d-dead-414b-8b90-3a37a592648b",
+      "name": "Sticky Note13",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2220,
+        4040
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-3-7-sonnet-20250219",
+          "cachedResultName": "Claude 3.7 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        2260,
+        4140
+      ],
+      "id": "ea923dcc-52a1-4bf1-ad62-5972bdd6f594",
+      "name": "Anthropic Chat Model1"
+    },
+    {
+      "parameters": {
+        "name": "question_generator",
+        "description": "Creates various question types",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2440,
+        4140
+      ],
+      "id": "afb87907-b2c6-4057-bbc6-88b7eeec164b",
+      "name": "question_generator",
+      "notes": "Handles PDF extraction using PyPDF2/PDFMiner"
+    },
+    {
+      "parameters": {
+        "name": "distractor_generator",
+        "description": "=Generates plausible wrong answers",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2620,
+        4140
+      ],
+      "id": "a025bba1-2c12-4d61-9e51-c61be05e5850",
+      "name": "distractor_generator",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "assessment_formatter",
+        "description": "=Formats to standard schemas",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2620,
+        4320
+      ],
+      "id": "c52740d8-a495-4f5d-9efe-581bb1dafcf8",
+      "name": "assessment_formatter",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Storyboard Generator Model & tools",
+        "height": 420,
+        "width": 520,
+        "color": 2
+      },
+      "id": "c9f974b8-1bba-4807-b96f-fc2d37f446b3",
+      "name": "Sticky Note14",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2940,
+        3580
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2980,
+        3680
+      ],
+      "id": "821dc079-9a55-4f6d-9985-b0354b75dc16",
+      "name": "OpenAI Chat Model2"
+    },
+    {
+      "parameters": {
+        "name": "narrative_planner",
+        "description": "Creates learning narratives",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3160,
+        3680
+      ],
+      "id": "74cfb313-14c9-4c11-8c40-2ce971819014",
+      "name": "narrative_planner",
+      "notes": "Handles PDF extraction using PyPDF2/PDFMiner"
+    },
+    {
+      "parameters": {
+        "name": "distractor_generator",
+        "description": "=Chooses appropriate content types",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3340,
+        3680
+      ],
+      "id": "320ac457-25d7-4018-8e15-d620cad2a920",
+      "name": "content_selector",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "engagement_optimizer",
+        "description": "Enhances engagement elements",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3160,
+        3860
+      ],
+      "id": "7add4d69-e01a-40de-9f81-08c20c17b093",
+      "name": "engagement_optimizer",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "storyboard_renderer",
+        "description": "=Creates visual storyboards",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3340,
+        3860
+      ],
+      "id": "62f73e7e-22e4-49e3-bdf3-3d08bd1b7741",
+      "name": "storyboard_renderer",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 Visual Element Planner Model & tools",
+        "height": 400,
+        "width": 520,
+        "color": 2
+      },
+      "id": "9c9913ae-226d-464a-8df8-03f5be698fd2",
+      "name": "Sticky Note15",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3580,
+        3580
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        3600,
+        3680
+      ],
+      "id": "d4f74ca9-592a-4850-9b41-638f4faa530e",
+      "name": "DALL-E"
+    },
+    {
+      "parameters": {
+        "name": "style_manager",
+        "description": "Maintains consistent visual style",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3800,
+        3680
+      ],
+      "id": "31ec2800-5284-40ab-8e72-80fdaaab46e8",
+      "name": "style_manager",
+      "notes": "Handles PDF extraction using PyPDF2/PDFMiner"
+    },
+    {
+      "parameters": {
+        "name": "image_selector",
+        "description": "=generates appropriate images",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3980,
+        3680
+      ],
+      "id": "e46e671d-7ca0-442f-85b1-811c1e9d3c19",
+      "name": "image_selector",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "layout_designer",
+        "description": "Creates visual layouts",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3800,
+        3860
+      ],
+      "id": "9e426674-e164-4ae0-b075-069bb62ce02f",
+      "name": "layout_designer",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "accessibility_checker",
+        "description": "=Ensures visual elements are accessible\n\n- Analyzes color contrast ratios to ensure text is readable (meeting WCAG 2.1 AA standards)\n- Verifies that images have appropriate alt text descriptions\n- Checks that interactive elements are keyboard navigable\n- Ensures content works with screen readers\n- Checks text size and readability\n- Verifies that UI components have proper ARIA labels",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3980,
+        3860
+      ],
+      "id": "eebde35b-2cae-4862-aebf-642b77801a38",
+      "name": "accessibility_checker",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Module Builder Model & tools",
+        "height": 400,
+        "width": 520,
+        "color": 2
+      },
+      "id": "e85d4e59-ce84-4836-a45a-58c2c223b35e",
+      "name": "Sticky Note16",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4240,
+        3580
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4280,
+        3680
+      ],
+      "id": "d104edc9-90b9-4ff5-8f4c-abe1561e1f96",
+      "name": "OpenAI Chat Model3"
+    },
+    {
+      "parameters": {
+        "name": "component_assembler",
+        "description": "Combines all elements",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        4460,
+        3680
+      ],
+      "id": "ea5cdbef-3226-44f0-bcfd-7971de506700",
+      "name": "component_assembler",
+      "notes": "Handles PDF extraction using PyPDF2/PDFMiner"
+    },
+    {
+      "parameters": {
+        "name": "format_converter",
+        "description": "=Transforms the aggregated content specifically into Rise-compatible format",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        4640,
+        3680
+      ],
+      "id": "ab172f52-8e9f-4c39-b315-a3fca0afe24e",
+      "name": "format_converter",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "metadata_generator",
+        "description": "Creates LMS-compatible metadata",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        4460,
+        3860
+      ],
+      "id": "b3b8f2e1-b3d7-4cae-b58c-1a0579a35e5a",
+      "name": "metadata_generator",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "package_validator",
+        "description": "=Validates final package compliance\n\nExample: Checks that:\n- SCORM manifest files are correctly structured\n- All accessibility requirements (WCAG 2.1 AA) are met\n- All required metadata for LMS compatibility is present\n- No broken links or media files exist\nContent renders properly across devices",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        4640,
+        3860
+      ],
+      "id": "7ae88c06-13f9-479c-b231-4db2aa6e4ac3",
+      "name": "package_validator",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "difficulty_calibrator",
+        "description": "Adjusts question difficulty",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2440,
+        4320
+      ],
+      "id": "8833d77f-cd0a-4994-9bb7-857050827b80",
+      "name": "difficulty_calibrator",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "name": "sequence_Evaluator",
+        "description": "Checks sequences for pedagogical soundness",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1600,
+        3860
+      ],
+      "id": "0a2dd6ff-d8c5-4bd6-bb77-932933bb9076",
+      "name": "sequence_Evaluator",
+      "notes": "Extracts objectives from text"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        20,
+        3340
+      ],
+      "id": "d4a03199-1d5d-4f6b-8e42-1492b8d1f29e",
+      "name": "Subject Matter Agent"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖Subject Matter Model & tools",
+        "height": 260,
+        "width": 580,
+        "color": 2
+      },
+      "id": "4717ee6c-4bfe-41ee-acbf-a38afb32ac67",
+      "name": "Sticky Note17",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -180,
+        3600
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -120,
+        3700
+      ],
+      "id": "a4c8a525-dbdf-4ea8-8058-4e42330f315e",
+      "name": "OpenAI Chat Model4"
+    },
+    {
+      "parameters": {
+        "name": "Document Parser",
+        "description": "Handles All type of Data Type (PDF extraction / Videos etc etc",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        60,
+        3700
+      ],
+      "id": "a89e4b96-64d8-4edc-8d93-c8304f6b7359",
+      "name": "Internal_document",
+      "notes": "Handles PDF extraction using PyPDF2/PDFMiner"
+    },
+    {
+      "parameters": {
+        "name": "DocumentParser",
+        "description": "Get All type of External Data & Parser it",
+        "workflowId": {
+          "__rl": true,
+          "value": "jTW6P37SJpWN18xu",
+          "mode": "list",
+          "cachedResultName": "My workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        3700
+      ],
+      "id": "cadfb87e-513f-4703-9120-c9d13352ac29",
+      "name": "External_document",
+      "notes": "Handles PDF extraction using PyPDF2/PDFMiner"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "User upload script": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Parser": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Learning Objective Extractor": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sequencier Generator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Storyboard Generator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quiz Generator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visual Element Planner": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Module Builder": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Generate E-learning Module ( Rise Alike )",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate E-learning Module ( Rise Alike )": {
+      "main": [
+        [
+          {
+            "node": "Validate Module",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Module": {
+      "main": [
+        [
+          {
+            "node": "is approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is approved": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Publish in Studio Manager",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Publish in Docebo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Publish in Moodle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Content JSON": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Parser tool": {
+      "main": [
+        [
+          {
+            "node": "Structured Content JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Learning Objective Extractor tool": {
+      "main": [
+        [
+          {
+            "node": "Learning Objectives JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Learning Objectives JSON": {
+      "main": [
+        [
+          {
+            "node": "Validation checkpoints",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sequencier Generator tool": {
+      "main": [
+        [
+          {
+            "node": "Content Sequence JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Sequence JSON": {
+      "main": [
+        [
+          {
+            "node": "Validation checkpoints1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Storyboard Generator tool": {
+      "main": [
+        [
+          {
+            "node": "Storyboard1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visual Element Planner tool": {
+      "main": [
+        [
+          {
+            "node": "Storyboard With Visual Specifications",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Storyboard1": {
+      "main": [
+        [
+          {
+            "node": "Validation checkpoints2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Module Builder Tool": {
+      "main": [
+        [
+          {
+            "node": "Final Module",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Client Cahier de charge": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contenu brute de l’expert metie": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Learning Objective Extractor tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        []
+      ]
+    },
+    "Storyboard With Visual Specifications": {
+      "main": [
+        [
+          {
+            "node": "Module Builder Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation checkpoints": {
+      "main": [
+        [
+          {
+            "node": "Sequencier Generator tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation checkpoints1": {
+      "main": [
+        [
+          {
+            "node": "Quiz Generator tool",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Storyboard Generator tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation checkpoints2": {
+      "main": [
+        [
+          {
+            "node": "Visual Element Planner tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Module": {
+      "main": [
+        [
+          {
+            "node": "Validation checkpoints3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Microsoft Teams",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Document Parser tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft Teams": {
+      "main": [
+        [
+          {
+            "node": "Client Cahier de charge + briefs ( Transcription )",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Client Cahier de charge + briefs ( Transcription )": {
+      "main": [
+        [
+          {
+            "node": "Document Parser tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quiz Generator tool": {
+      "main": [
+        [
+          {
+            "node": "Quizes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quizes": {
+      "main": [
+        [
+          {
+            "node": "Storyboard Generator tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Module1": {
+      "main": [
+        []
+      ]
+    },
+    "Client Cahier de charge1": {
+      "main": [
+        [
+          {
+            "node": "Subject Matter Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Learning Objective Agent": {
+      "main": [
+        [
+          {
+            "node": "Sequencier Generator agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sequencier Generator agent": {
+      "main": [
+        [
+          {
+            "node": "Storyboard Generator Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Quiz Generator Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quiz Generator Agent": {
+      "main": [
+        [
+          {
+            "node": "Storyboard Generator Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Storyboard Generator Agent": {
+      "main": [
+        [
+          {
+            "node": "Visual Element Planner Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visual Element Planner Agent": {
+      "main": [
+        [
+          {
+            "node": "Module Builder Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Module Builder Agent": {
+      "main": [
+        [
+          {
+            "node": "Final Module1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "objective_extractor": {
+      "ai_tool": [
+        [
+          {
+            "node": "Learning Objective Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bloom_classifier": {
+      "ai_tool": [
+        [
+          {
+            "node": "Learning Objective Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "objective_formatter": {
+      "ai_tool": [
+        [
+          {
+            "node": "Learning Objective Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Learning Objective Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sequencier Generator agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dependency_analyzer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Sequencier Generator agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "path_optimizer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Sequencier Generator agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sequence_visualizer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Sequencier Generator agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Quiz Generator Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "question_generator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Quiz Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "distractor_generator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Quiz Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "assessment_formatter": {
+      "ai_tool": [
+        [
+          {
+            "node": "Quiz Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Storyboard Generator Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "narrative_planner": {
+      "ai_tool": [
+        [
+          {
+            "node": "Storyboard Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "content_selector": {
+      "ai_tool": [
+        [
+          {
+            "node": "Storyboard Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "engagement_optimizer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Storyboard Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "storyboard_renderer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Storyboard Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "component_assembler": {
+      "ai_tool": [
+        [
+          {
+            "node": "Module Builder Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "format_converter": {
+      "ai_tool": [
+        [
+          {
+            "node": "Module Builder Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "metadata_generator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Module Builder Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "package_validator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Module Builder Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Module Builder Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "style_manager": {
+      "ai_tool": [
+        [
+          {
+            "node": "Visual Element Planner Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "image_selector": {
+      "ai_tool": [
+        [
+          {
+            "node": "Visual Element Planner Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "layout_designer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Visual Element Planner Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "accessibility_checker": {
+      "ai_tool": [
+        [
+          {
+            "node": "Visual Element Planner Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DALL-E": {
+      "main": [
+        [
+          {
+            "node": "Visual Element Planner Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "difficulty_calibrator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Quiz Generator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sequence_Evaluator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Sequencier Generator agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subject Matter Agent": {
+      "main": [
+        [
+          {
+            "node": "Learning Objective Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Subject Matter Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Internal_document": {
+      "ai_tool": [
+        [
+          {
+            "node": "Subject Matter Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "External_document": {
+      "ai_tool": [
+        [
+          {
+            "node": "Subject Matter Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bdfc65ce-ce23-4ff5-91b7-f5ddd21eb225",
+  "meta": {
+    "instanceId": "0f335312d047e0f05c537bd8d461793715cde0fcc54d739d380946671306cfc0"
+  },
+  "id": "IbVZGwShlRSZVqlq",
+  "tags": []
+}

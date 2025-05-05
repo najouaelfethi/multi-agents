@@ -1,0 +1,23 @@
++LLMs: type of AI model that has been trained on vast amounts of text data
++Transformers: is type of neural network, developed to solve problem of sequence transduction(ta7wil) comme traduction.
+ ->RNN: good mais peut perdre de l'information pour sequences longues.
+ ->LSTM(Long short term memory): type du RNN but still can have troubles with long sentences
+ ->CNN(Convolutional...): grace au traitement // il est rapide mais truve prob to catch context global
++nb epoques(iterations): 3
++La Cross-Entropy compare la probabilité prédite par le modèle avec les vraies probabilités des tokens cibles
++perplexité mesure la qualité des prédictions du modèle
+
++Architecture du transformers:
+-Embedding: convertir mots en vecteurs numeriques
+-Positional Encoding: represente la position du mot dans la phrase
+-self-attention: permet a chaque mot de la meme sequence evaluer son importance, en calculant le score => Q(Query),V(values),K(keys) sont des parametres qui peuvent etre updated lors du training
+-Multi-Head attention: plusieurs self-attention runing in //, permet de determiner relationship entre les mots dans meme sequence.
+-Feed-forward layer(neural network): effectue des transformations sur attention via des couches connectees
+-Cross-Attention: lie 2 sequences et etablie relationship entre eux
+-Linear & Softmax: convertie output of model into probabilities to predict next word in sequence
+
+Images:
++formule1: Pour avoir le Modele fine-tuned, on aplique une fonction d'activation(exp: softmax, sigmoide) sur la sortie de Ltask(couche ajoute pour une tache cible) qui prend comme argument modele pre-entraine
+
+
+
