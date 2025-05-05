@@ -18,8 +18,13 @@ def external_search(query: str, sentences: int = 3) -> str: #select 3 sentences 
         summary = wikipedia.summary(query, sentences=sentences)
         return json.dumps({"summary": summary})
     except wikipedia.exceptions.DisambiguationError as e:
+        return json.dumps({
+            "error": f"Multiple meanings found. Please specify one of: {', '.join(e.options[:5])}."
+        })
+    except wikipedia.exceptions.DisambiguationError as e:
         return json.dumps({"error": f"Disambiguation error. Options: {e.options}"})
     except wikipedia.exceptions.PageError:
         return json.dumps({"error": "No Wikipedia page found for your question."})
     except Exception as e:
         return json.dumps({"error": str(e)})
+    

@@ -32,10 +32,12 @@ vector_store = VectorStore()
 print("\n Welcome to the AI Assistant")
 user_query = input("What would you like to ask? ")
 
-choice = input("Do you want to search using internal documents or external sources? (Type 'internal' or 'external'): ").strip().lower()
+choice = input("Do you want to search using internal documents or external sources? (Type 'internal' or 'external', or 'both'): ").strip().lower()
 
 uploaded_doc_path = None
-if choice == "internal":
+namespace = None
+
+if choice == "internal" or choice == "both":
     uploaded_doc_path = input("Please enter the file path of the document to process: ").strip()
     
     #Automatic document processing, no tools needed here
@@ -83,11 +85,10 @@ if choice == "internal":
                     }
                 })
 
-
             #Store vectors in Pinecone
             all_vectors = text_vectors + image_vectors
             if all_vectors:
-                vector_store.store_vectors(all_vectors, namespace=namespace)
+                vector_store.store_vectors(all_vectors, namespace=namespace)#updates vectors already existing 
                 print(f"Successfully stored {len(all_vectors)} chunks in namespace '{namespace}'")
             else:
                 print("No valid chunks were processed.")
@@ -96,6 +97,12 @@ if choice == "internal":
             print(f"Error processing document: {str(e)}")
     else:
         print("Error: Document path is invalid or file does not exist.")
+    
+    if not namespace:
+        namespace = "default"  #if namespace not defined
+
+elif choice == "external":
+    namespace = "default"
 
 # --------------- CREW & AGENTS ---------------
 
@@ -113,7 +120,10 @@ with Crew() as crew:
     retriever_agent = Agent(
         name="RetrieverAgent",
         backstory="You retrieve relevant information either from internal documents or external sources.",
-        task_description="If internal search was selected, search the internal vector database. Otherwise, perform an external search.",
+        task_description=
+        "If internal search was selected, search the internal vector database. "
+        "If external search was selected, perform an external search."
+        "If search_type is 'both', perform BOTH internal and external searches and combine the results.",
         task_expected_output="Provide retrieved information.",
         tools=[internal_search, external_search],
     )
@@ -122,8 +132,10 @@ with Crew() as crew:
     answer_agent = Agent(
         name="AnswerAgent",
         backstory="You generate a final answer based on the retrieved information.",
-        task_description=f"Use the retrieved information to answer this question: '{user_query}', if you don't have any information, say 'No information found'.",
-        task_expected_output="Provide a good answer.",
+        task_description=f"""Use the retrieved information to answer this question: '{user_query}'.
+        If the retrieved information contains an error suggesting multiple meanings or asking for clarification, 
+        propose to the user the available options. If no information is found at all, say 'No information found'.""",
+        task_expected_output="Provide a clear and useful answer or ask for clarification if needed.",
         tools=[]
     )
 
@@ -139,10 +151,11 @@ with Crew() as crew:
 
     if choice == "internal" and uploaded_doc_path:
         #doc_processor_agent.receive_context(f"Document path: {uploaded_doc_path}")
-        retriever_agent.receive_context({"namespace": namespace, "search_type": "internal"})
-    else:
-        retriever_agent.receive_context("Use external search.")
-
+        retriever_agent.receive_context({"namespace": namespace, "search_type": "internal", "user_query":user_query})
+    elif choice == "external":
+        retriever_agent.receive_context({"search_type":"external", "user_query":user_query})
+    elif choice == "both":
+        retriever_agent.receive_context({"namespace": namespace, "search_type":"both", "user_query":user_query})
     # -------------RUN CREW ---------------
 
     crew.run()
